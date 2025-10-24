@@ -1,4 +1,4 @@
-import { MCPServer, MCPSessionManager, MCPTool, z } from 'mcp-lambda-sdk';
+import { MCPServer, MCPSessionManager, MCPTool, z } from 'mcp-lambda-node';
 
 /**
  * Servidor MCP de Calculadora com operações matemáticas avançadas

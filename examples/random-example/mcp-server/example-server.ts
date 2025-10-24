@@ -1,4 +1,4 @@
-import { MCPServer, MCPSessionManager, MCPTool, z } from 'mcp-lambda-sdk';
+import { MCPServer, MCPSessionManager, MCPTool, z } from 'mcp-lambda-node';
 
 /**
  * Example MCP server demonstrating decorator usage with session management

@@ -9,7 +9,7 @@ The MCP Lambda SDK provides a simple, decorator-based approach to create MCP ser
 ## Installation
 
 ```bash
-npm install mcp-lambda-sdk
+npm install mcp-lambda-node
 ```
 
 ## Quick Start
@@ -17,7 +17,7 @@ npm install mcp-lambda-sdk
 ### 1. Create an MCP Server Class
 
 ```typescript
-import { MCPServer, MCPTool, z } from 'mcp-lambda-sdk';
+import { MCPServer, MCPTool, z } from 'mcp-lambda-node';
 
 @MCPServer({
   name: 'my-calculator-server',
@@ -65,7 +65,7 @@ export class CalculatorServer {
 ### 2. Create the Lambda Handler
 
 ```typescript
-import { MCPHandlerFactory, APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'mcp-lambda-sdk';
+import { MCPHandlerFactory, APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'mcp-lambda-node';
 import { CalculatorServer } from './calculator-server';
 
 // Create the handler using the factory
@@ -142,7 +142,7 @@ Creates a Lambda handler function for an MCP server class.
 The SDK includes built-in session management to maintain state across multiple tool calls from the same client session.
 
 ```typescript
-import { MCPSessionManager } from 'mcp-lambda-sdk';
+import { MCPSessionManager } from 'mcp-lambda-node';
 
 @MCPServer({
   name: 'stateful-server',

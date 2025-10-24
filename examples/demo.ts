@@ -5,7 +5,7 @@
  * This shows how easy it is to create an MCP server with decorators
  */
 
-import { MCPHandlerFactory, MCPServer, MCPTool, z } from 'mcp-lambda-sdk';
+import { MCPHandlerFactory, MCPServer, MCPTool, z } from 'mcp-lambda-node';
 
 // Step 1: Create a simple MCP server class with decorators
 @MCPServer({
