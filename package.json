@@ -1,0 +1,68 @@
+{
+	"name": "mcp-lambda-node",
+	"version": "1.0.0",
+	"description": "SDK for creating Model Context Protocol (MCP) servers with AWS Lambda using decorators",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"prepublishOnly": "npm run build",
+		"lint": "eslint src/**/*.ts",
+		"lint:fix": "eslint src/**/*.ts --fix"
+	},
+	"keywords": [
+		"mcp",
+		"model-context-protocol",
+		"aws-lambda",
+		"serverless",
+		"decorators",
+		"typescript",
+		"ai",
+		"llm"
+	],
+	"author": "Tyago Veras",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/TyagoVeras/mcp-lambda-node.git"
+	},
+	"bugs": {
+		"url": "https://github.com/TyagoVeras/mcp-lambda-node/issues"
+	},
+	"homepage": "https://github.com/TyagoVeras/mcp-lambda-node#readme",
+	"engines": {
+		"node": ">=18"
+	},
+	"peerDependencies": {
+		"@types/aws-lambda": "^8.10.156"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.38.0",
+		"@types/aws-lambda": "^8.10.156",
+		"@types/node": "^24.9.1",
+		"eslint": "^9.38.0",
+		"globals": "^16.4.0",
+		"jiti": "^2.6.1",
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.46.2"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.20.1",
+		"reflect-metadata": "^0.2.2",
+		"uuid": "^13.0.0",
+		"zod": "^3.25.76"
+	}
+}

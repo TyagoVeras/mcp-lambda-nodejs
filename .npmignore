@@ -1,0 +1,56 @@
+# Source files
+src/
+
+# Build artifacts
+tsconfig.json
+tsconfig.*.json
+
+# Development files
+.eslintrc.*
+eslint.config.*
+
+# Examples (users can find them on GitHub)
+examples/
+
+# Serverless framework files
+serverless.yml
+
+# Test files
+**/*.test.ts
+**/*.spec.ts
+
+# Development docs
+PUBLICATION_GUIDE.md
+TRANSFORMATION_SUMMARY.md
+
+# Lock files (let users manage their own)
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# node_modules (should be ignored by default but just in case)
+node_modules/
+
+# Keep only the essential files for the package
+# The 'files' field in package.json will control what's included
