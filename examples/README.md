@@ -1,13 +1,13 @@
-# MCP Lambda SDK - Calculator Example
+# MCP Lambda SDK to NodeJs - Calculator Example
 
-This example demonstrates how to use the `mcp-lambda-node` package to create a Model Context Protocol server that runs on AWS Lambda.
+This example demonstrates how to use the `mcp-lambda-nodejs` package to create a Model Context Protocol server that runs on AWS Lambda.
 
 ## Installation
 
 First, install the package in your project:
 
 ```bash
-npm install mcp-lambda-node
+npm install mcp-lambda-nodejs
 npm install --save-dev @types/aws-lambda typescript
 ```
 
@@ -18,7 +18,7 @@ npm install --save-dev @types/aws-lambda typescript
 Create a file `calculator-server.ts`:
 
 ```typescript
-import { z, MCPServer, MCPTool, MCPSessionManager } from 'mcp-lambda-node';
+import { z, MCPServer, MCPTool, MCPSessionManager } from 'mcp-lambda-nodejs';
 
 @MCPServer({
   name: 'calculator-mcp-server',
@@ -94,7 +94,7 @@ export class CalculatorMCPServer {
 Create a file `calculator-handler.ts`:
 
 ```typescript
-import { APIGatewayProxyEventV2, APIGatewayProxyResultV2, MCPHandlerFactory } from 'mcp-lambda-node';
+import { APIGatewayProxyEventV2, APIGatewayProxyResultV2, MCPHandlerFactory } from 'mcp-lambda-nodejs';
 import { CalculatorMCPServer } from './calculator-server';
 
 // Create the handler using the factory

@@ -1,5 +1,5 @@
 {
-	"name": "mcp-lambda-node",
+	"name": "mcp-lambda-nodejs",
 	"version": "1.0.0",
 	"description": "SDK for creating Model Context Protocol (MCP) servers with AWS Lambda using decorators",
 	"main": "dist/index.js",
@@ -37,12 +37,12 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/TyagoVeras/mcp-lambda-node.git"
+		"url": "git+https://github.com/TyagoVeras/mcp-lambda-nodejs.git"
 	},
 	"bugs": {
-		"url": "https://github.com/TyagoVeras/mcp-lambda-node/issues"
+		"url": "https://github.com/TyagoVeras/mcp-lambda-nodejs/issues"
 	},
-	"homepage": "https://github.com/TyagoVeras/mcp-lambda-node#readme",
+	"homepage": "https://github.com/TyagoVeras/mcp-lambda-nodejs#readme",
 	"engines": {
 		"node": ">=18"
 	},

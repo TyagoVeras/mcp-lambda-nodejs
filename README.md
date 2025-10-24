@@ -1,15 +1,15 @@
-# MCP Lambda SDK
+# MCP Lambda SDK to NodeJs
 
 A TypeScript SDK for creating Model Context Protocol (MCP) servers that run on AWS Lambda using decorators.
 
 ## Overview
 
-The MCP Lambda SDK provides a simple, decorator-based approach to create MCP servers that run as AWS Lambda functions. With just a few decorators, you can expose your Lambda functions as MCP tools that can be called by AI systems following the Model Context Protocol specification.
+The MCP Lambda SDK to NodeJs provides a simple, decorator-based approach to create MCP servers that run as AWS Lambda functions. With just a few decorators, you can expose your Lambda functions as MCP tools that can be called by AI systems following the Model Context Protocol specification.
 
 ## Installation
 
 ```bash
-npm install mcp-lambda-node
+npm install mcp-lambda-nodejs
 ```
 
 ## Quick Start
@@ -17,7 +17,7 @@ npm install mcp-lambda-node
 ### 1. Create an MCP Server Class
 
 ```typescript
-import { MCPServer, MCPTool, z } from 'mcp-lambda-node';
+import { MCPServer, MCPTool, z } from 'mcp-lambda-nodejs';
 
 @MCPServer({
   name: 'my-calculator-server',
@@ -65,7 +65,7 @@ export class CalculatorServer {
 ### 2. Create the Lambda Handler
 
 ```typescript
-import { MCPHandlerFactory, APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'mcp-lambda-node';
+import { MCPHandlerFactory, APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'mcp-lambda-nodejs';
 import { CalculatorServer } from './calculator-server';
 
 // Create the handler using the factory
@@ -142,7 +142,7 @@ Creates a Lambda handler function for an MCP server class.
 The SDK includes built-in session management to maintain state across multiple tool calls from the same client session.
 
 ```typescript
-import { MCPSessionManager } from 'mcp-lambda-node';
+import { MCPSessionManager } from 'mcp-lambda-nodejs';
 
 @MCPServer({
   name: 'stateful-server',

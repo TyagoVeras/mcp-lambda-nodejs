@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 /**
- * Simple demonstration of how the MCP Lambda SDK works
+ * Simple demonstration of how the MCP Lambda SDK to NodeJs works
  * This shows how easy it is to create an MCP server with decorators
  */
 
-import { MCPHandlerFactory, MCPServer, MCPTool, z } from 'mcp-lambda-node';
+import { MCPHandlerFactory, MCPServer, MCPTool, z } from 'mcp-lambda-nodejs';
 
 // Step 1: Create a simple MCP server class with decorators
 @MCPServer({
@@ -60,7 +60,7 @@ class DemoCalculator {
 // Step 2: Create the Lambda handler - it's this simple!
 const handler = MCPHandlerFactory.createHandler(DemoCalculator, 'demo');
 
-console.log('✅ MCP Lambda SDK Demo');
+console.log('✅ MCP Lambda SDK to NodeJs Demo');
 console.log('');
 console.log('🎯 Key Features Demonstrated:');
 console.log('  • Simple @MCPServer decorator to mark server classes');
