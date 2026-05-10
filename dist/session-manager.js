@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MCPSessionManager = exports.InMemorySessionStorage = void 0;
+exports.deriveSessionId = deriveSessionId;
 const node_crypto_1 = require("node:crypto");
 class InMemorySessionStorage {
     constructor() {
@@ -32,6 +33,9 @@ class InMemorySessionStorage {
     }
 }
 exports.InMemorySessionStorage = InMemorySessionStorage;
+function deriveSessionId(parts) {
+    return (0, node_crypto_1.createHash)('sha256').update(parts.join('::')).digest('hex').slice(0, 32);
+}
 class MCPSessionManager {
     constructor(storage) {
         this.storage = storage || new InMemorySessionStorage();

@@ -15,7 +15,8 @@ export { MCPHandlerFactory } from './mcp-handler.js';
 export { MCPServerFactory, type MCPToolHandler } from './server-factory.js';
 
 // Session management
-export { MCPSessionManager } from './session-manager.js';
+export { MCPSessionManager, InMemorySessionStorage, deriveSessionId } from './session-manager.js';
+export type { MCPSession, SessionStorage, SessionCreateOptions } from './session-manager.js';
 
 // Re-export types from AWS Lambda for convenience
 export type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';

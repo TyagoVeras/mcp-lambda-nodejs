@@ -1,5 +1,6 @@
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
 import 'reflect-metadata';
+import { MCPSessionManager } from './session-manager.js';
 /**
  * Generic MCP Handler Factory
  */
@@ -9,6 +10,6 @@ export declare class MCPHandlerFactory {
      * @param ServerClass - The decorated MCP server class
      * @param serverName - Optional server name for instance management
      */
-    static createHandler<T extends object>(ServerClass: new (...args: unknown[]) => T, serverName?: string): (event: APIGatewayProxyEventV2) => Promise<APIGatewayProxyResultV2>;
+    static createHandler<T extends object>(ServerClass: new (...args: unknown[]) => T, serverName?: string, sessionManager?: MCPSessionManager): (event: APIGatewayProxyEventV2) => Promise<APIGatewayProxyResultV2>;
 }
 //# sourceMappingURL=mcp-handler.d.ts.map

@@ -231,6 +231,69 @@ async divide(params: { dividend: number; divisor: number }) {
 }
 ```
 
+## Compaction-aware sessions
+
+When an LLM compacts its context window it loses memory of the session ID and
+what it stored — even though the server-side session is still alive. The SDK
+addresses this with three complementary patterns.
+
+### 1. Stable session IDs
+
+Derive the `mcp-session-id` from a durable identifier instead of a random UUID
+so a re-compacted client can re-join the same session:
+
+```typescript
+import { deriveSessionId } from 'mcp-lambda-nodejs';
+
+const sessionId = deriveSessionId(['user-123', 'project-42']);
+// same inputs → same 32-char hex ID, always
+```
+
+### 2. Recap on `initialize`
+
+Pass your `MCPSessionManager` as the third argument to `createHandler`. When a
+client re-initializes with a known session ID the `initialize` response will
+carry an `instructions` field summarising the active session — no extra
+round-trip needed.
+
+```typescript
+import { MCPHandlerFactory, MCPSessionManager } from 'mcp-lambda-nodejs';
+import { MyServer } from './my-server';
+
+const sessionManager = new MCPSessionManager();
+
+export const handler = MCPHandlerFactory.createHandler(
+  MyServer, 'my-server', sessionManager
+);
+```
+
+Example `initialize` response when a session exists:
+
+```json
+{
+  "protocolVersion": "2024-11-05",
+  "capabilities": { ... },
+  "serverInfo": { ... },
+  "instructions": "Active session abc123. State keys: cart, userId. Last updated: 2024-11-05T12:00:00.000Z."
+}
+```
+
+### 3. Built-in `session_recap` tool
+
+When `sessionManager` is wired in, a `session_recap` tool is auto-registered.
+The LLM (or the agent loop) can call it explicitly to retrieve the full session
+state after compaction:
+
+```json
+{ "method": "tools/call", "params": { "name": "session_recap", "arguments": {} } }
+```
+
+Returns the current `sessionId`, timestamps, and full `state` as JSON.
+
+> **Production note**: The default `InMemorySessionStorage` does not survive
+> Lambda cold starts. Use `DynamoDBSessionStorage` (see `examples/dynamodb-session-storage.ts`)
+> for compaction-resilience to matter across invocations.
+
 ## Examples
 
 See the `/examples` directory for complete working examples:
