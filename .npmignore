@@ -22,6 +22,8 @@ serverless.yml
 # Development docs
 PUBLICATION_GUIDE.md
 TRANSFORMATION_SUMMARY.md
+CLAUDE.md
+CLAUDE.local.md
 
 # Lock files (let users manage their own)
 pnpm-lock.yaml

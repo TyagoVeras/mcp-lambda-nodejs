@@ -3,3 +3,5 @@ node_modules
 .esbuild
 .env
 .build
+dist
+CLAUDE.local.md
