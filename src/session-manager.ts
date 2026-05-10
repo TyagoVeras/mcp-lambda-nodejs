@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 
 export interface MCPSession {
   sessionId: string;
@@ -59,6 +59,10 @@ export class InMemorySessionStorage implements SessionStorage {
       }
     }
   }
+}
+
+export function deriveSessionId(parts: string[]): string {
+  return createHash('sha256').update(parts.join('::')).digest('hex').slice(0, 32);
 }
 
 export class MCPSessionManager {

@@ -2,6 +2,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
 import 'reflect-metadata';
 import { MCPServerFactory } from './server-factory.js';
+import { MCPSessionManager } from './session-manager.js';
 
 // Simple in-memory store for server instances (for Lambda)
 const serverInstances: { [key: string]: McpServer } = {};
@@ -15,7 +16,7 @@ export class MCPHandlerFactory {
    * @param ServerClass - The decorated MCP server class
    * @param serverName - Optional server name for instance management
    */
-  static createHandler<T extends object>(ServerClass: new (...args: unknown[]) => T, serverName?: string) {
+  static createHandler<T extends object>(ServerClass: new (...args: unknown[]) => T, serverName?: string, sessionManager?: MCPSessionManager) {
     return async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
       try {
         // Handle CORS preflight
@@ -60,7 +61,7 @@ export class MCPHandlerFactory {
         }
 
         // Handle the JSON-RPC request
-        const response = await handleJsonRpcRequest(server, jsonRpcRequest, sessionId, ServerClass);
+        const response = await handleJsonRpcRequest(server, jsonRpcRequest, sessionId, ServerClass, sessionManager);
 
         return {
           statusCode: 200,
@@ -83,29 +84,43 @@ export class MCPHandlerFactory {
 /**
  * Handles JSON-RPC requests for any MCP server
  */
-async function handleJsonRpcRequest<T extends object>(server: McpServer, request: JsonRpcRequest, sessionId: string, ServerClass: new (...args: unknown[]) => T): Promise<JsonRpcResponse> {
+async function handleJsonRpcRequest<T extends object>(server: McpServer, request: JsonRpcRequest, sessionId: string, ServerClass: new (...args: unknown[]) => T, sessionManager?: MCPSessionManager): Promise<JsonRpcResponse> {
   try {
     switch (request.method) {
-      case 'initialize':
-        return {
-          jsonrpc: '2.0',
-          id: request.id,
-          result: {
-            protocolVersion: '2024-11-05',
-            capabilities: {
-              tools: { listChanged: true },
-              resources: { subscribe: false, listChanged: false },
-              prompts: { listChanged: false }
-            },
-            serverInfo: {
-              name: `mcp-lambda-server-${ServerClass.name}`,
-              version: '1.0.0'
-            }
+      case 'initialize': {
+        const initResult: Record<string, unknown> = {
+          protocolVersion: '2024-11-05',
+          capabilities: {
+            tools: { listChanged: true },
+            resources: { subscribe: false, listChanged: false },
+            prompts: { listChanged: false }
+          },
+          serverInfo: {
+            name: `mcp-lambda-server-${ServerClass.name}`,
+            version: '1.0.0'
           }
         };
 
+        if (sessionManager && sessionId !== 'default') {
+          const session = await sessionManager.getSession(sessionId);
+          if (session) {
+            const keys = Object.keys(session.state);
+            initResult.instructions = `Active session ${session.sessionId}. State keys: ${keys.length > 0 ? keys.join(', ') : 'none'}. Last updated: ${session.updatedAt}.`;
+          }
+        }
+
+        return { jsonrpc: '2.0', id: request.id, result: initResult };
+      }
+
       case 'tools/list': {
         const tools = await getServerTools(server, ServerClass);
+        if (sessionManager) {
+          tools.push({
+            name: 'session_recap',
+            description: 'Returns a digest of the current session state. Call this after re-initialization to recover context lost to compaction.',
+            inputSchema: { type: 'object', properties: {}, required: [] }
+          });
+        }
         return {
           jsonrpc: '2.0',
           id: request.id,
@@ -118,7 +133,32 @@ async function handleJsonRpcRequest<T extends object>(server: McpServer, request
           throw new Error('Tool name is required');
         }
 
-        const toolResult = await callServerTool(server, request.params.name as string, (request.params.arguments as Record<string, unknown>) || {}, sessionId, ServerClass);
+        const toolName = request.params.name as string;
+
+        if (toolName === 'session_recap' && sessionManager) {
+          const session = await sessionManager.getSession(sessionId);
+          if (!session) {
+            throw new Error(`No session found for id: ${sessionId}`);
+          }
+          return {
+            jsonrpc: '2.0',
+            id: request.id,
+            result: {
+              content: [{
+                type: 'text',
+                text: JSON.stringify({
+                  sessionId: session.sessionId,
+                  createdAt: session.createdAt,
+                  updatedAt: session.updatedAt,
+                  stateKeys: Object.keys(session.state),
+                  state: session.state
+                }, null, 2)
+              }]
+            }
+          };
+        }
+
+        const toolResult = await callServerTool(server, toolName, (request.params.arguments as Record<string, unknown>) || {}, sessionId, ServerClass);
         return {
           jsonrpc: '2.0',
           id: request.id,

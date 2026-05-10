@@ -30,6 +30,7 @@ export declare class InMemorySessionStorage implements SessionStorage {
     delete(sessionId: string): Promise<void>;
     cleanup(): Promise<void>;
 }
+export declare function deriveSessionId(parts: string[]): string;
 export declare class MCPSessionManager {
     private storage;
     constructor(storage?: SessionStorage);
