@@ -291,8 +291,20 @@ state after compaction:
 Returns the current `sessionId`, timestamps, and full `state` as JSON.
 
 > **Production note**: The default `InMemorySessionStorage` does not survive
-> Lambda cold starts. Use `DynamoDBSessionStorage` (see `examples/dynamodb-session-storage.ts`)
-> for compaction-resilience to matter across invocations.
+> Lambda cold starts. Use one of the persistent storage backends below for
+> compaction-resilience to matter across invocations.
+
+### Storage backend examples
+
+Copy-paste ready implementations are in `examples/`. None of these are bundled
+in the SDK — install only the driver you need.
+
+| Backend    | File                                    | Install                                  |
+|------------|-----------------------------------------|------------------------------------------|
+| DynamoDB   | `examples/dynamodb-session-storage.ts`  | `@aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb` |
+| Redis      | `examples/redis-session-storage.ts`     | `ioredis`                                |
+| MongoDB    | `examples/mongodb-session-storage.ts`   | `mongodb`                                |
+| PostgreSQL | `examples/postgresql-session-storage.ts`| `pg`                                     |
 
 ## Examples
 
